@@ -1,11 +1,3 @@
-/*
-Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
-If not, the app should log a phrase like Insufficient quantity!, and then prevent the order from going through.
-However, if your store does have enough of the product, you should fulfill the customer's order.
-This means updating the SQL database to reflect the remaining quantity.
-Once the update goes through, show the customer the total cost of their purchase.
-*/
-
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
@@ -43,7 +35,13 @@ function start() {
             inquirer.prompt([{
                 type: "input",
                 name: "howMany",
-                message: "How many units of the product would you like to buy?"
+                message: "How many units of the product would you like to buy?",
+                validate: function (value) {
+                    if (isNaN(value) === false) {
+                        return true;
+                    }
+                    return false;
+                }
             }
         ]).then(function (answer)
             {
@@ -52,4 +50,22 @@ function start() {
         });
     });
     conn.end();
+};
+
+//Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
+function checkInventory(){
+    conn.query('SELECT stock_quantity FROM `products` WHERE item_id = ' + id, function (err, res) {
+        if (err) throw err;
+        if (res > purchaseAmt){
+            console.log("Update the table");
+            //if your store does have enough of the product, you should fulfill the customer's order.
+            //This means updating the SQL database to reflect the remaining quantity.
+            //Once the update goes through, show the customer the total cost of their purchase.
+        }
+        else {
+            //If not, the app should log a phrase like Insufficient quantity!, and then prevent the order from going through.
+            console.log("Insufficient quantity!");
+            conn.end();
+        }
+    });
 };
