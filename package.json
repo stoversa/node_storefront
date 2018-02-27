@@ -1,0 +1,23 @@
+{
+  "name": "node_storefront",
+  "version": "1.0.0",
+  "description": "An Amazon-like terminal-based \"storefront\" using Node.js &amp; MySQL. Created for Week 12 of UNC's Coding Bootcamp",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stoversa/node_storefront.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stoversa/node_storefront/issues"
+  },
+  "homepage": "https://github.com/stoversa/node_storefront#readme",
+  "dependencies": {
+    "mysql": "^2.15.0"
+  }
+}
