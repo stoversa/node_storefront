@@ -113,7 +113,7 @@ function updateInventory(id, quantity) {
                         },
                         {
                             item_id: id
-                        },
+                        }
                     ],
                     function (err) {
                         if (err) throw err;
@@ -126,7 +126,41 @@ function updateInventory(id, quantity) {
 };
 
 function newProduct() { 
-//If a manager selects Add New Product, it should allow the manager to add a completely new product to the store.
-    console.log('\x1b[33m%s\x1b[0m', '\n This feature is in progress. Please try again later! :) \n');
-    start();
+    console.log('\x1b[33m%s\x1b[0m', '\n Please provide some information about the new item:  \n');
+    inquirer.prompt([
+        {
+            name: "name",
+            message: "What is the product called?",
+        },
+        {
+            name: "department",
+            message: "Which department sells this product?",
+        },
+        {
+            name: "price",
+            message: "What is the price of this procuct?",
+        },
+        {
+            name: "stock",
+            message: "How many units of this product are you adding?",
+        }])
+        .then(function (answer) {
+            addNew(answer.name, answer.department, answer.price, answer.stock);
+        });
+};
+
+function addNew(n, d, p, s){
+    var name = n.trim();
+    var department = d.trim();
+    var price = Number(p);
+    var stock = parseInt(s);
+    conn.query(
+        'INSERT INTO products (product_name, department_name, price, stock_quantity) VALUES (?,?,?,?)',
+        [name, department, price, stock],
+        function (err) {
+            if (err) throw err;
+            console.log('\x1b[33m%s\x1b[0m', '\n Item ' + name +' has now been added to the inventory!\n');
+            start();
+        }
+    );
 };
