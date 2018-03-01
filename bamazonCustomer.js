@@ -1,5 +1,6 @@
 var mysql = require("mysql");
-var inquirer = require("inquirer");
+const inquirer = require("inquirer");
+const cTable = require('console.table');
 
 var conn = mysql.createConnection({
     host: "localhost",
@@ -10,62 +11,78 @@ var conn = mysql.createConnection({
 
 conn.connect(function (err) {
     if (err) throw err;
-    console.log("connected as ID: " + conn.threadId);
     start();
 });
 
 function start() {
     conn.query('SELECT * FROM `products`', function (err, res) {
-        if (err) { throw err; }
+        if (err) { throw err; };
+        if (res && res.length){
+            console.table(res);
+        };
         inquirer.prompt([
             {
-                type: "rawlist",
                 name: "choice",
                 message: "Hello! Which item would you like to purchase?",
-                choices: function () {
-                    var choiceArray = [];
-                    for (var i = 0; i < res.length; i++) {
-                        choiceArray.push("ID: " + res[i].item_id + " | Name: " + res[i].product_name + " | Price: " + res[i].price);
-                    }
-                    return choiceArray;
-                }
-            }
-        ]).then(function (answer) {
-            console.log(answer.choice);
-            inquirer.prompt([{
-                type: "input",
-                name: "howMany",
-                message: "How many units of the product would you like to buy?",
                 validate: function (value) {
-                    if (isNaN(value) === false) {
+                    if (isNaN(value) === false && parseInt(value) > 0) {
                         return true;
                     }
                     return false;
                 }
-            }
-        ]).then(function (answer)
+            },
             {
-                console.log(answer.howMany);
-            })
-        });
+                name: "howMany",
+                message: "How many units of the product would you like to buy? (type q to quit)",
+                validate: function (value) {
+                    if (value === 'q' || isNaN(value) === false && parseInt(value) > 0) {
+                        return true;
+                    }
+                    return false;
+            }
+            }]).then(function (answer) {
+                if (answer.choice === 'q' || answer.howMany === 'q'){
+                    conn.end();
+                }
+                else{
+                    checkInventory(answer.choice, answer.howMany);
+                }
+        })
     });
-    conn.end();
 };
 
-//Once the customer has placed the order, your application should check if your store has enough of the product to meet the customer's request.
-function checkInventory(){
-    conn.query('SELECT stock_quantity FROM `products` WHERE item_id = ' + id, function (err, res) {
+function checkInventory(id, quantity){
+    var number = parseInt(quantity);
+    conn.query('SELECT stock_quantity, price, product_sales FROM `products` WHERE ?', { item_id: id }, function (err, res) {
+        var price = Number(res[0].price);
+        var sales = parseInt(res[0].product_sales) + number;
         if (err) throw err;
-        if (res > purchaseAmt){
-            console.log("Update the table");
-            //if your store does have enough of the product, you should fulfill the customer's order.
-            //This means updating the SQL database to reflect the remaining quantity.
-            //Once the update goes through, show the customer the total cost of their purchase.
-        }
-        else {
-            //If not, the app should log a phrase like Insufficient quantity!, and then prevent the order from going through.
-            console.log("Insufficient quantity!");
-            conn.end();
+        if (res && res.length) {
+            if (res[0].stock_quantity >= number) {
+                conn.query(
+                    "UPDATE products SET ?,? WHERE ?",
+                    [
+                        {
+                            stock_quantity: (res[0].stock_quantity - number)
+                        },
+                        {
+                            product_sales: sales
+                        },
+                        {
+                            item_id: id
+                        },
+                    ],
+                    function (err) {
+                        if (err) throw err;
+                        console.log('\x1b[33m%s\x1b[0m', '\n Thank you for your purchase. Your total is: $' + (price * number) + '\n');
+                        start();
+                    }
+                );
+            }
+            else {
+                console.log('\x1b[31m%s\x1b[0m', '\n Our apologies: There is an insufficient quantity to complete this purchase! Please try again!\n');
+                start();
+            }
         }
     });
 };
