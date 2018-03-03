@@ -37,7 +37,20 @@ function start() {
 };
 
 function viewSales() {
-    conn.query("SELECT department_id as 'Department ID', d.department_name as 'Department Name', IFNULL(product_sales, 0) as 'Product Sales', over_head_costs as 'Overhead Costs',  IFNULL((IFNULL(product_sales, 0) - over_head_costs), 0) as 'Total Profit' FROM (SELECT SUM(subtotal) AS 'product_sales', department_name FROM ( SELECT price * product_sales AS 'subtotal', department_name FROM bamazon.products) sub GROUP BY department_name) sub2 RIGHT JOIN bamazon.departments d on sub2.department_name = d.department_name;", function (err, res) {
+    var query = 
+    `SELECT
+    department_id as 'Department ID',
+    d.department_name as 'Department Name',
+        IFNULL(product_sales, 0) as 'Product Sales',
+        over_head_costs as 'Overhead Costs',
+        IFNULL((IFNULL(product_sales, 0) - over_head_costs), 0) as 'Total Profit'
+    FROM
+        (SELECT SUM(subtotal) AS 'product_sales', department_name FROM(
+            SELECT price * product_sales AS 'subtotal', department_name FROM bamazon.products) sub GROUP BY department_name) sub2
+    RIGHT JOIN bamazon.departments d on sub2.department_name = d.department_name;
+    `
+    
+    conn.query(query, function (err, res) {
         if (err) { throw err; };
         if (res && res.length) {
             console.log('\x1b[33m%s\x1b[0m', '\n SALES BY DEPARTMENT: \n');
