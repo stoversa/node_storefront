@@ -23,33 +23,45 @@ function start() {
         inquirer.prompt([
             {
                 name: "choice",
-                message: "Hello! Which item would you like to purchase?",
-                validate: function (value) {
-                    if (isNaN(value) === false && parseInt(value) > 0) {
-                        return true;
-                    }
-                    return false;
-                }
-            },
-            {
-                name: "howMany",
-                message: "How many units of the product would you like to buy? (type q to quit)",
+                message: "Hello! Which item would you like to purchase? (type q to quit)",
                 validate: function (value) {
                     if (value === 'q' || isNaN(value) === false && parseInt(value) > 0) {
                         return true;
                     }
                     return false;
-            }
+                }
             }]).then(function (answer) {
-                if (answer.choice === 'q' || answer.howMany === 'q'){
+                if (answer.choice === 'q'){
                     conn.end();
                 }
                 else{
-                    checkInventory(answer.choice, answer.howMany);
+                    howMany(answer.choice);
                 }
         })
     });
 };
+
+function howMany(choice){
+    var userChoice = choice;
+    inquirer.prompt([
+        {
+            name: "howMany",
+            message: "How many units of the product would you like to buy? (type q to quit)",
+            validate: function (value) {
+                if (value === 'q' || isNaN(value) === false && parseInt(value) > 0) {
+                    return true;
+                }
+                return false;
+            }
+        }]).then(function (answer) {
+            if (answer.howMany === 'q') {
+                conn.end();
+            }
+            else {
+                checkInventory(userChoice, answer.howMany);
+            }
+        })
+}
 
 function checkInventory(id, quantity){
     var number = parseInt(quantity);
