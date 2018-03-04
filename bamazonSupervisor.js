@@ -85,7 +85,7 @@ function addNew(n, o) {
         [name, overhead],
         function (err) {
             if (err) throw err;
-            console.log('\x1b[33m%s\x1b[0m', '\n Item ' + name + ' has now been added to the department list!\n');
+            console.log('\x1b[33m%s\x1b[0m', '\n Department ' + name + ' has now been added to the department list!\n');
             start();
         }
     );
