@@ -28,27 +28,34 @@ npm i
 
 ### Features Overview
 
-#### Customer
-This is the customer-facing UI for Bamazon. Users can view available items, and submit orders for products (and specify quantity). If the store holds a sufficient quantity of a requested item, the purchase is processed, and the user is shown how much the transacation cost.
-
+#### Customer View
 This feature can be accessed from the terminal with:
 ```
 node bamazonCustomer.js
 ```
+![bamazonCustomer in Action](./multimedia/bamazonCustomer.gif)
+
+This is the customer-facing UI for Bamazon. Users can view available items, and submit orders for products (and specify quantity). If the store holds a sufficient quantity of a requested item, the purchase is processed, and the user is shown how much the transacation cost.
 
 
 #### Manager
-The Manager feature allows users to adjust intentory by reviewing the product line, adding new products, or updating the quantity of a product.
-
 This feature can be accessed from the terminal with:
 ```
 node bamazonManager.js
 ```
+![BamazonManager in Action](./multimedia/bamazonManager.gif)
+
+The Manager feature allows users to adjust intentory by reviewing the product line, adding new products, or updating the quantity of a product.
+
+
 
 #### Supervisor
-Finally, the Supervisor feature allows a user to view sales activity by department, compare it to expected to revenue targets, and add new departments.
-
 This feature can be accessed from the terminal with:
 ```
 node bamazonSupervisor.js
 ```
+![BamazonManager in Action](./multimedia/bamazonSupervisor.gif)
+
+
+Finally, the Supervisor feature allows a user to view sales activity by department, compare it to expected to revenue targets, and add new departments.
+
