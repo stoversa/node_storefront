@@ -86,7 +86,7 @@ function checkInventory(id, quantity){
                     ],
                     function (err) {
                         if (err) throw err;
-                        console.log('\x1b[33m%s\x1b[0m', '\n Thank you for your purchase. Your total is: $' + (price * number) + '\n');
+                        console.log('\x1b[33m%s\x1b[0m', '\n Thank you for your purchase. Your total is: $' + (price * number).toFixed(2) + '\n');
                         start();
                     }
                 );
