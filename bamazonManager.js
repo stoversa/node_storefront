@@ -138,7 +138,7 @@ function newProduct() {
         },
         {
             name: "price",
-            message: "What is the price of this procuct?",
+            message: "What is the price of this product?",
         },
         {
             name: "stock",
