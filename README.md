@@ -35,7 +35,7 @@ node bamazonCustomer.js
 ```
 ![bamazonCustomer in Action](./multimedia/bamazonCustomer.gif)
 
-This is the customer-facing UI for Bamazon. Users can view available items, and submit orders for products (and specify quantity). If the store holds a sufficient quantity of a requested item, the purchase is processed, and the user is shown how much the transacation cost.
+This is the customer-facing UI for Bamazon. Users can view available items, and submit orders for products (and specify quantity). If the store holds a sufficient quantity of a requested item, the purchase is processed, and the user is shown how much the transacation cost. [(See bamazonCustomer.js in action)](https://youtu.be/e51BxQAoqM4 "Video Demo of bamazonCustomer.js")
 
 
 #### Manager
@@ -45,7 +45,7 @@ node bamazonManager.js
 ```
 ![BamazonManager in Action](./multimedia/bamazonManager.gif)
 
-The Manager feature allows users to adjust intentory by reviewing the product line, adding new products, or updating the quantity of a product.
+The Manager feature allows users to adjust intentory by reviewing the product line, adding new products, or updating the quantity of a product. [(See bamazonManager.js in action)](https://youtu.be/EjW6xYe9Fjk "Video Demo of bamazonManager.js")
 
 
 
@@ -57,5 +57,5 @@ node bamazonSupervisor.js
 ![BamazonManager in Action](./multimedia/bamazonSupervisor.gif)
 
 
-Finally, the Supervisor feature allows a user to view sales activity by department, compare it to expected to revenue targets, and add new departments.
+Finally, the Supervisor feature allows a user to view sales activity by department, compare it to expected to revenue targets, and add new departments. [(See bamazonSupervisor.js in action)](https://youtu.be/ovvHOs1SCG4 "Video Demo of bamazonSupervisor.js")
 
